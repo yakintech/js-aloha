@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+
+<body>
+
+    <div>
+        <label for="">Id:</label>
+        <input type="text" name="" id="productId">
+    </div>
+    <div>
+        <button onclick="deleteProduct()">Delete</button>
+    </div>
+    <hr>
+    <ul id="products">
+
+    </ul>
+
+</body>
+<script>
+
+    function deleteProduct() {
+        let id = document.getElementById('productId').value;
+
+        axios.delete('https://northwind.vercel.app/api/products/' + id)
+            .then(res => {
+                console.log('Success!!');
+                loadData();
+            })
+
+    }
+
+
+
+    function loadData() {
+
+        document.getElementById('products').innerHTML = ""
+
+        axios.get('https://northwind.vercel.app/api/products')
+            .then(res => {
+                let data = res.data;
+
+                data.forEach(element => {
+
+                    let liElement = document.createElement('li');
+                    liElement.innerHTML = element.name + " - " + element.id;
+                    document.getElementById('products').appendChild(liElement);
+                });
+            })
+
+    }
+
+
+    loadData();
+
+</script>
+
+</html>
